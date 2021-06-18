@@ -1,16 +1,18 @@
 const mongoose=require("mongoose"); 
 const Document= require("./Document");
+const PORT = process.env.PORT || 3001;
+const connectionString = process.env.DATABASE_URL || "mongodb+srv://shank:shankie@doxcluster.ejjmi.mongodb.net/dox?retryWrites=true&w=majority"; 
 
-mongoose.connect("mongodb://localhost/dox", {
+mongoose.connect(connectionString, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
   useCreateIndex: true,
 });
 
-const io = require("socket.io")(3001, {
+const io = require("socket.io")(PORT, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://doxapp.netlify.app/",
     methods: ["GET", "POST"],
   },
 });
