@@ -12,6 +12,7 @@ mongoose.connect(connectionString, {
   useCreateIndex: true,
 });
 
+//connection with client
 const io = require("socket.io")(PORT, {
   cors: {
     origin: "https://doxapp.netlify.app",
