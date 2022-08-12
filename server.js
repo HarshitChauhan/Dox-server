@@ -11,7 +11,7 @@ mongoose.connect(connectionString, {
 });
 
 //connection with client
-const io = require("socket.io")(PORT, {
+const io = require("socket.io")(process.env.PORT, {
   cors: {
     // origin: "https://doxapp.netlify.app",
     origin: `${process.env.FRONTENT_URL}`,
