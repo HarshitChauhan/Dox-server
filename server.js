@@ -1,8 +1,11 @@
 const mongoose = require("mongoose");
 const Document = require("./Document");
-const PORT = process.env.PORT;
-const connectionString =
-  process.env.DATABASE_URL
+const PORT = process.env.PORT || 3001;
+const connectionString = process.env.DATABASE_URL;
+
+console.log("Starting Server...");
+// console.log(`${process.env.DATABASE_URL} and ${process.env.FRONTEND_URL} and ${process.env.PORT}`);
+
 mongoose.connect(connectionString, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -11,11 +14,11 @@ mongoose.connect(connectionString, {
 });
 
 //connection with client
-const io = require("socket.io")(process.env.PORT, {
+const io = require("socket.io")(PORT, {
   cors: {
     // origin: "https://doxapp.netlify.app",
-    origin: `${process.env.FRONTENT_URL}`,
-    // origin: "http://localhost:3000",
+    origin: "https://doxsite.netlify.app",
+    // origin: process.env.FRONTENT_URL,
     methods: ["GET", "POST"],
   },
 });
