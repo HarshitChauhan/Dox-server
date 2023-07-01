@@ -1,13 +1,29 @@
 require('dotenv').config();
+const express = require("express");
+const { Server } = require('socket.io');
 const mongoose = require("mongoose");
 const Document = require("./Document");
 const PORT = process.env.PORT || 3001;
 const connectionString = process.env.DATABASE_URL;
 
-console.log("Starting Dox Server...");
+const app = express();
+console.log("Starting Application Server...");
+const server = app.listen(PORT, () => {
+  console.log(`Dox Server has been started successfully on Port: ${process.env.PORT}!`);
+});
+
+// Socket setup
+const io = new Server(server, {
+  cors: {
+        origin: process.env.FRONTEND_URL,
+        methods: ["GET", "POST"],
+      },
+});
+
 // console.log(`${process.env.DATABASE_URL}\n and ${process.env.FRONTEND_URL}\n and ${process.env.PORT}`);
 
-const result =  mongoose.connect(connectionString, {
+// database connection
+mongoose.connect(connectionString, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
@@ -16,13 +32,6 @@ const result =  mongoose.connect(connectionString, {
   console.log('Database Connection Successfull!');
 });
 
-//connection with client
-const io = require("socket.io")(PORT, {
-  cors: {
-    origin: process.env.FRONTEND_URL,
-    methods: ["GET", "POST"],
-  },
-});
 
 const defaultValue = "";
 
@@ -57,5 +66,3 @@ async function findOrCreateDocument(id) {
   // else create new return it
   return await Document.create({ _id: id, data: defaultValue });
 }
-
-console.log(`Dox Server has been started successfully on Port: ${process.env.PORT}!`);
