@@ -1,5 +1,7 @@
 require('dotenv').config();
 const express = require("express");
+const router = require('./router');
+const cors = require("cors");
 const { Server } = require('socket.io');
 const mongoose = require("mongoose");
 const Document = require("./Document");
@@ -15,10 +17,13 @@ const server = app.listen(PORT, () => {
 // Socket setup
 const io = new Server(server, {
   cors: {
-        origin: process.env.FRONTEND_URL,
-        methods: ["GET", "POST"],
-      },
+    origin: process.env.FRONTEND_URL,
+    methods: ["GET", "POST"],
+  },
 });
+
+app.use(router);
+app.use(cors());
 
 // console.log(`${process.env.DATABASE_URL}\n and ${process.env.FRONTEND_URL}\n and ${process.env.PORT}`);
 
